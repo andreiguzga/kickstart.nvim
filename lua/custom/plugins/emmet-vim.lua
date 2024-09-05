@@ -6,5 +6,4 @@ return {
   {
     'mattn/emmet-vim',
   },
-  { 'rcarriga/nvim-notify' },
 }

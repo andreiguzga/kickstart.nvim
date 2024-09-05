@@ -8,3 +8,6 @@ vim.api.nvim_create_autocmd('BufEnter', {
     vim.opt_local.foldlevelstart = 99
   end,
 })
+
+vim.g.copilot_node_command = '/Users/gzg/.nvm/versions/node/v18.20.3/bin/nod'
+vim.g.lazyvim_php_lsp = 'intelephense'

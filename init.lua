@@ -632,6 +632,23 @@ require('lazy').setup({
             },
           },
         },
+        -- Add Intelephense for PHP
+        intelephense = {
+          settings = {
+            intelephense = {
+              environment = {
+                -- You can add include paths or other settings specific to your PHP projects here
+                includePaths = { 'src', 'vendor' }, -- Example include paths
+              },
+              -- Add any other custom configurations you need for Intelephense
+              diagnostics = {
+                undefinedVariables = true,
+                undefinedFunctions = true,
+                typeMismatch = true,
+              },
+            },
+          },
+        },
       }
 
       -- Ensure the servers and tools above are installed
@@ -647,6 +664,8 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+        'intelephense',
+        'typescript-language-server',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -657,6 +676,9 @@ require('lazy').setup({
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
             -- certain features of an LSP (for example, turning off formatting for tsserver)
+            if server_name == 'tsserver' then
+              server_name = 'ts_ls'
+            end
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
           end,
@@ -833,6 +855,21 @@ require('lazy').setup({
     'catppuccin/nvim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
     init = function()
+      require('catppuccin').setup {
+        integrations = {
+          cmp = true,
+          gitsigns = true,
+          nvimtree = true,
+          treesitter = true,
+          noice = true,
+          harpoon = true,
+          mason = true,
+          neogit = true,
+          neotree = true,
+          telescope = true,
+          which_key = true,
+        },
+      }
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
@@ -934,6 +971,7 @@ require('lazy').setup({
 }, {
   spec = {
     { import = 'lazyvim.plugins.extras.coding.copilot-chat' },
+    { import = 'lazyvim.plugins.extras.lang.php' },
   },
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
