@@ -9,5 +9,5 @@ vim.api.nvim_create_autocmd('BufEnter', {
   end,
 })
 
-vim.g.copilot_node_command = '/Users/gzg/.nvm/versions/node/v18.20.3/bin/nod'
+vim.g.copilot_node_command = '/Users/gzg/.nvm/versions/node/v18.20.3/bin/node'
 vim.g.lazyvim_php_lsp = 'intelephense'

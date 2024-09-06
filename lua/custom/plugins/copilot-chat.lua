@@ -7,13 +7,19 @@ return {
       local user = vim.env.USER or 'User'
       user = user:sub(1, 1):upper() .. user:sub(2)
       return {
-        model = 'gpt-4',
+        model = 'gpt-4o',
         auto_insert_mode = true,
         show_help = true,
         question_header = '  ' .. user .. ' ',
         answer_header = '  Copilot ',
         window = {
           width = 0.4,
+        },
+        mappings = {
+          complete = {
+            detail = 'Use @<C-t> or /<C-t> for options.',
+            insert = '<C-t>',
+          },
         },
         selection = function(source)
           local select = require 'CopilotChat.select'
@@ -52,9 +58,25 @@ return {
         mode = { 'n', 'v' },
       },
       -- Show help actions with telescope
-      -- { '<leader>ad', M.pick 'help', desc = 'Diagnostic Help (CopilotChat)', mode = { 'n', 'v' } },
+      {
+        '<leader>ad',
+        function()
+          local actions = require 'CopilotChat.actions'
+          require('CopilotChat.integrations.telescope').pick(actions.help_actions())
+        end,
+        desc = 'Diagnostic Help (CopilotChat)',
+        mode = { 'n', 'v' },
+      },
       -- Show prompts actions with telescope
-      -- { '<leader>ap', M.pick 'prompt', desc = 'Prompt Actions (CopilotChat)', mode = { 'n', 'v' } },
+      {
+        '<leader>ap',
+        function()
+          local actions = require 'CopilotChat.actions'
+          require('CopilotChat.integrations.telescope').pick(actions.prompt_actions())
+        end,
+        desc = 'Prompt Actions (CopilotChat)',
+        mode = { 'n', 'v' },
+      },
     },
     config = function(_, opts)
       local chat = require 'CopilotChat'
